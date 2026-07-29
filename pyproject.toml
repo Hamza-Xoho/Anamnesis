@@ -6,8 +6,9 @@ requires-python = ">=3.11"
 dependencies = []
 
 [project.optional-dependencies]
-# Only needed for the phase-0b real examiner (network grading). 0a runs without it.
-examiner = ["anthropic>=0.116.0"]
+# Only needed for the phase-0b examiner: `anthropic` for network grading, and
+# `pyyaml` to read the frozen evaluation set. 0a mechanism tests run without it.
+examiner = ["anthropic>=0.116.0", "pyyaml>=6.0"]
 
 [dependency-groups]
 dev = ["pytest>=8.0"]

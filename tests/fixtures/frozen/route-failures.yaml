@@ -14,30 +14,33 @@
 # Test for a good item: could someone give this answer, be marked correct in an
 # exam, and still not understand the topic? If yes, it belongs here.
 #
-# Pilot target: 8 items. Full set: 25.
+# Pilot target: 8 items. Informative floor: 25. Full set: 25.
+#
+# SHAPE: this file is a bare top-level LIST — each entry begins with `- item_id:`
+# at column zero, exactly like the worked examples. The `[]` below is the empty
+# list; delete it and add your entries when you start writing.
 
-items: []
+[]
 
 # ---------------------------------------------------------------------------
-# TEMPLATE — replace `items: []` above with entries in this shape
+# TEMPLATE — delete the `[]` above and copy this block once per item
 # ---------------------------------------------------------------------------
 #
-# items:
-#   - item_id: rf-001
-#     concept: ""
-#     subject: ""
-#     probe: ""
-#     rubric:
-#       claims:
-#         - ""
-#       route_markers:
-#         - ""
-#     response:
-#       source: own-answer | past-script | peer-answer | own-recollection
-#       text: |
-#         ...
-#     label:
-#       verdict: hit
-#       route_quality: route_failure
-#       route_marker_missed: ""
-#       note: ""
+# - item_id: rf-001
+#   concept: ""
+#   subject: ""
+#   probe: ""
+#   rubric:
+#     claims:
+#       - ""
+#     route_markers:
+#       - ""
+#   response:
+#     source: own-answer | past-script | peer-answer | own-recollection
+#     text: |
+#       ...
+#   label:
+#     verdict: hit
+#     route_quality: route_failure
+#     route_marker_missed: ""
+#     note: ""
