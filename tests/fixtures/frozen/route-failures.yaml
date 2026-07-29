@@ -1,97 +1,43 @@
 # route-failures.yaml — SC-4
 #
-# Every entry here reaches the RIGHT CONCLUSION by a route that does not work.
-# The label is therefore almost always:
-#     verdict: hit          <- the answer is correct
+# ⚠️  EMPTY ON PURPOSE. Every entry below must be written by YOU, not a model.
+#     Worked examples live in Docs/Production/fixtures-template/route-failures.yaml
+#     — read them for shape, then write your own here. Do not copy them in.
+#
+# Every entry reaches the RIGHT CONCLUSION by a route that does not work:
+#     verdict: hit                   <- the answer is correct
 #     route_quality: route_failure   <- the reasoning is not
 #
 # A grader that only checks conclusions passes all of these. Yours must flag
-# >=80% of them. This is the test that separates Anamnesis from a marking script.
-#
-# These are the hardest items to write, because you have to notice a belief you
-# hold that is both load-bearing and wrong. Med school is full of them — the
-# explanations that survive because the conclusion they lead to is correct, so
-# nobody ever checks the middle.
-#
-# WRITE THESE YOURSELF. Not from a model. See README.md.
-
-- item_id: rf-001
-  concept: Oxygen therapy in COPD
-  subject: Respiratory medicine
-  probe: "Why do we give oxygen cautiously to a patient with COPD?"
-
-  rubric:
-    claims:
-      - "Excess oxygen can worsen hypercapnia in COPD"
-      - "Target saturations are lower than for other patients"
-    route_markers:
-      - "Attributes the CO2 rise principally to V/Q mismatch and the Haldane effect"
-      - "Does not rest the explanation on loss of hypoxic drive"
-
-  response:
-    source: own-recollection
-    text: |
-      Because COPD patients are chronic CO2 retainers, so their central
-      chemoreceptors have adapted and they no longer respond to CO2. Hypoxia is
-      the only thing still driving their respiration. Give them high-flow oxygen
-      and you remove that drive, they hypoventilate, and CO2 climbs further. That
-      is why we target 88 to 92 percent rather than 94 to 98.
-
-  label:
-    verdict: hit
-    route_quality: route_failure
-    route_marker_missed: "Attributes the CO2 rise principally to V/Q mismatch and the Haldane effect"
-    note: "Correct action, correct targets, wrong physiology. Hypoxic drive contributes only marginally; the dominant mechanisms are release of hypoxic pulmonary vasoconstriction increasing dead space, and the Haldane effect offloading CO2 from oxygenated haemoglobin. Everyone is taught this version and it survives because the conclusion is right."
-
-- item_id: rf-002
-  concept: Why lactate rises in sepsis
-  subject: Pathophysiology
-  probe: "A septic patient has a lactate of 4.2. Why is it raised?"
-
-  rubric:
-    claims:
-      - "Raised lactate in sepsis marks severity and predicts mortality"
-    route_markers:
-      - "Recognises that much of the rise is aerobic — adrenergic stimulation of Na/K-ATPase and glycolysis"
-      - "Does not attribute the rise solely to tissue hypoxia and anaerobic metabolism"
-
-  response:
-    source: peer-answer
-    text: |
-      Sepsis causes microcirculatory failure and impaired oxygen delivery to the
-      tissues. When cells cannot get enough oxygen for oxidative phosphorylation
-      they switch to anaerobic glycolysis, and the end product of that is lactate.
-      So a lactate above 4 tells you the tissues are hypoxic, which is why it
-      predicts mortality and why we use it to guide resuscitation.
-
-  label:
-    verdict: hit
-    route_quality: route_failure
-    route_marker_missed: "Recognises that much of the rise is aerobic — adrenergic stimulation of Na/K-ATPase and glycolysis"
-    note: "Right about what the number means clinically, wrong about where it comes from. Much of the lactate in sepsis is produced aerobically via beta-2 driven glycolysis, not by hypoxic tissue. Matters practically: chasing lactate with fluid assumes the hypoxia story."
-
-# ---------------------------------------------------------------------------
-# TEMPLATE — copy from here
-# ---------------------------------------------------------------------------
+# >=80%. This is the test that separates Anamnesis from a marking script.
 #
 # Test for a good item: could someone give this answer, be marked correct in an
 # exam, and still not understand the topic? If yes, it belongs here.
 #
-# - item_id: rf-00N
-#   concept: ""
-#   subject: ""
-#   probe: ""
-#   rubric:
-#     claims:
-#       - ""
-#     route_markers:
-#       - ""
-#   response:
-#     source: own-answer | past-script | peer-answer | own-recollection
-#     text: |
-#       ...
-#   label:
-#     verdict: hit
-#     route_quality: route_failure
-#     route_marker_missed: ""
-#     note: ""
+# Pilot target: 8 items. Full set: 25.
+
+items: []
+
+# ---------------------------------------------------------------------------
+# TEMPLATE — replace `items: []` above with entries in this shape
+# ---------------------------------------------------------------------------
+#
+# items:
+#   - item_id: rf-001
+#     concept: ""
+#     subject: ""
+#     probe: ""
+#     rubric:
+#       claims:
+#         - ""
+#       route_markers:
+#         - ""
+#     response:
+#       source: own-answer | past-script | peer-answer | own-recollection
+#       text: |
+#         ...
+#     label:
+#       verdict: hit
+#       route_quality: route_failure
+#       route_marker_missed: ""
+#       note: ""

@@ -1,5 +1,9 @@
 # matched-pairs.yaml — SC-1
 #
+# ⚠️  EMPTY ON PURPOSE. Every entry below must be written by YOU, not a model.
+#     Worked examples live in Docs/Production/fixtures-template/matched-pairs.yaml
+#     — read them for shape, then write your own here. Do not copy them in.
+#
 # Each entry is ONE concept with TWO answers to the SAME probe:
 #   confidently_wrong — fluent, structured, assured, and WRONG
 #   hedged_correct    — messy, uncertain, apologetic, and RIGHT
@@ -7,121 +11,39 @@
 # The grader must rank hedged_correct above confidently_wrong in >=90% of pairs.
 # If it cannot, it is scoring prose quality and the project's premise fails.
 #
-# WRITE THESE YOURSELF. Not from a model. See README.md.
+# Pilot target: 10 pairs. Informative floor: ~25. Full set: 40.
 
-- pair_id: mp-001
-  concept: Hyperventilation-induced tetany
-  subject: Physiology
-  probe: "Someone hyperventilates during a panic attack and their hands cramp into a claw. Why?"
-
-  rubric:
-    claims:
-      - "Hyperventilation lowers arterial CO2"
-      - "Low CO2 raises blood pH — respiratory alkalosis"
-      - "Alkalosis increases calcium binding to albumin, lowering ionised calcium"
-      - "Low ionised calcium raises neuromuscular excitability"
-    route_markers:
-      # A route marker is the step that separates understanding from recall.
-      # Someone who has memorised "hyperventilation causes tetany" misses these.
-      - "Identifies the pH shift as alkalosis, not acidosis"
-      - "Names IONISED calcium as what falls — total calcium is unchanged"
-
-  confidently_wrong:
-    source: own-recollection
-    text: |
-      Hyperventilation blows off CO2, which lowers the blood pH. The resulting
-      acidosis increases neuronal excitability, and this produces the carpopedal
-      spasm you see clinically — the classic main d'accoucheur. It resolves once
-      CO2 normalises, which is why rebreathing helps.
-    label:
-      verdict: miss
-      route_quality: route_failure
-      note: "Reverses the pH direction. Fluent, correct terminology, correct clinical picture, and the physiology is backwards from the second sentence on."
-
-  hedged_correct:
-    source: own-answer
-    text: |
-      So you breathe off too much CO2 and the blood goes... alkaline? I think
-      alkaline. And then calcium is involved somehow — I remember something about
-      it sticking to albumin more when it's alkaline, so there's less of the free
-      calcium floating about, and that's what makes the nerves fire too easily.
-      Not totally sure I've got the albumin bit the right way round.
-    label:
-      verdict: hit
-      route_quality: clean
-      note: "Hedges on every clause and gets the whole mechanism right, including that it is free calcium that falls. This is the answer that must rank higher."
+pairs: []
 
 # ---------------------------------------------------------------------------
-# Second worked example: a HARDER pair. Include several like this — a set made
-# only of obvious pairs measures the easy middle and tells you nothing.
-# ---------------------------------------------------------------------------
-
-- pair_id: mp-002
-  concept: Why oedema forms in nephrotic syndrome
-  subject: Pathophysiology
-  probe: "Why does a patient with nephrotic syndrome become oedematous?"
-
-  rubric:
-    claims:
-      - "Heavy proteinuria depletes plasma albumin"
-      - "Low plasma oncotic pressure favours filtration out of capillaries"
-      - "Primary renal sodium retention contributes independently of oncotic pressure"
-    route_markers:
-      - "Does not present low oncotic pressure as the sole mechanism"
-
-  confidently_wrong:
-    source: past-script
-    text: |
-      Nephrotic syndrome causes massive proteinuria, so plasma albumin falls.
-      Albumin is the main determinant of plasma oncotic pressure, so oncotic
-      pressure drops, Starling forces shift toward filtration, and fluid moves
-      into the interstitium. The resulting hypovolaemia activates RAAS, which
-      retains sodium and water and worsens the oedema further.
-    label:
-      verdict: partial
-      route_quality: route_failure
-      note: "Textbook underfill account, delivered with total assurance. Most nephrotic patients are not hypovolaemic — sodium retention is primary and occurs at the collecting duct. Marked partial not miss: the oncotic limb is real, just not sufficient."
-
-  hedged_correct:
-    source: own-answer
-    text: |
-      The obvious answer is low albumin dropping the oncotic pressure, and that
-      is part of it. But I think that explanation is incomplete — I remember the
-      kidney itself retains sodium directly in nephrotic syndrome, independent of
-      volume status, and that a lot of these patients actually have normal or
-      high plasma volume rather than being underfilled. So it's both, and I think
-      the sodium retention might be the bigger half. Not certain about that.
-    label:
-      verdict: hit
-      route_quality: clean
-      note: "Uncertain, self-correcting, hedged on the relative weighting — and correct. Explicitly rejects the sole-mechanism account, which is the route marker."
-
-# ---------------------------------------------------------------------------
-# TEMPLATE — copy from here
+# TEMPLATE — replace `pairs: []` above with entries in this shape
 # ---------------------------------------------------------------------------
 #
-# - pair_id: mp-00N
-#   concept: ""
-#   subject: ""
-#   probe: ""
-#   rubric:
-#     claims:
-#       - ""
-#     route_markers:
-#       - ""
-#   confidently_wrong:
-#     source: own-answer | past-script | peer-answer | own-recollection
-#     text: |
-#       ...
-#     label:
-#       verdict: miss | partial
-#       route_quality: route_failure | clean
-#       note: ""
-#   hedged_correct:
-#     source: own-answer | past-script | peer-answer | own-recollection
-#     text: |
-#       ...
-#     label:
-#       verdict: hit | effortless_hit
-#       route_quality: clean
-#       note: ""
+# pairs:
+#   - pair_id: mp-001
+#     concept: ""
+#     subject: ""
+#     probe: ""
+#     rubric:
+#       claims:
+#         - ""
+#       route_markers:
+#         # The step that separates understanding from recall. Someone who has
+#         # memorised the conclusion misses these.
+#         - ""
+#     confidently_wrong:
+#       source: own-answer | past-script | peer-answer | own-recollection
+#       text: |
+#         ...
+#       label:
+#         verdict: miss | partial
+#         route_quality: route_failure | clean
+#         note: ""
+#     hedged_correct:
+#       source: own-answer | past-script | peer-answer | own-recollection
+#       text: |
+#         ...
+#       label:
+#         verdict: hit | effortless_hit
+#         route_quality: clean
+#         note: ""
