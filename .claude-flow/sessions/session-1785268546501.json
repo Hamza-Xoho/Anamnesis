@@ -1,0 +1,14 @@
+{
+  "id": "session-1785268546501",
+  "startedAt": "2026-07-28T19:55:46.501Z",
+  "cwd": "/Users/hamza/Code/Anamnesis",
+  "context": {},
+  "metrics": {
+    "edits": 0,
+    "commands": 0,
+    "tasks": 0,
+    "errors": 0
+  },
+  "endedAt": "2026-07-28T20:04:01.502Z",
+  "duration": 495002
+}

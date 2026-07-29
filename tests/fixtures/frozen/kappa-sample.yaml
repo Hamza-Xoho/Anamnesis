@@ -1,0 +1,94 @@
+# kappa-sample.yaml — Cohen's κ
+#
+# ⚠️  DO NOT OPEN THIS FILE WHILE TUNING THE EXAMINER PROMPT.
+#
+# Its entire value is that the grader has never been optimised against it. Look
+# at these while iterating and κ stops measuring agreement and starts measuring
+# how well you fitted the prompt to answers you had already seen.
+#
+# Write it, close it, and do not reopen until the harness is finished.
+#
+# WHAT GOES IN: ordinary answers of MIXED quality. Nothing special about them —
+# no engineered contrast, no deliberate traps. That is the point. Parts 1 and 2
+# test specific failure modes; this tests whether the grader agrees with a human
+# across the ordinary range, beyond what chance would give.
+#
+# Aim for a spread roughly like: 25% miss, 30% partial, 35% hit, 10% effortless.
+# A sample that is all clear passes and clear failures inflates κ.
+#
+# WRITE THESE YOURSELF. Not from a model. See README.md.
+
+- item_id: k-001
+  concept: Anion gap in diabetic ketoacidosis
+  subject: Pathophysiology
+  probe: "Why is the anion gap raised in DKA?"
+
+  rubric:
+    claims:
+      - "Ketoacids are unmeasured anions"
+      - "They consume bicarbonate while sodium and chloride are unchanged"
+      - "The gap widens because the anion replacing bicarbonate is not counted"
+    route_markers:
+      - "Explains the gap as unmeasured anion accumulation, not as acidosis per se"
+
+  response:
+    source: own-answer
+    text: |
+      Because they're acidotic. The pH drops and the bicarbonate is consumed
+      buffering it, so the gap between the cations and anions you measure gets
+      bigger. That's why DKA gives you a high anion gap metabolic acidosis.
+
+  label:
+    verdict: partial
+    route_quality: route_failure
+    note: "Knows the label and that bicarbonate falls. Never says WHY the gap widens — that ketoacids are unmeasured. By this reasoning any acidosis would raise the gap, which is exactly what a hyperchloraemic acidosis does not do."
+
+- item_id: k-002
+  concept: First-pass metabolism
+  subject: Pharmacology
+  probe: "Why does the same drug need a much larger oral dose than intravenous dose?"
+
+  rubric:
+    claims:
+      - "Orally absorbed drug reaches the liver via the portal vein before systemic circulation"
+      - "Hepatic metabolism removes a fraction before it reaches the target"
+      - "Bioavailability is the surviving fraction"
+    route_markers:
+      - "Names the portal circulation as the reason the liver sees it first"
+
+  response:
+    source: own-answer
+    text: |
+      Anything absorbed from the gut drains into the portal vein and goes
+      straight through the liver before it gets anywhere near the systemic
+      circulation. The liver metabolises a chunk of it on that first pass, so
+      only a fraction survives — that fraction is the bioavailability. IV skips
+      the whole detour, so you need less. Drugs with heavy first-pass extraction
+      like GTN are basically useless orally, which is why it goes under the tongue.
+
+  label:
+    verdict: effortless_hit
+    route_quality: clean
+    note: "Complete, fluent, names the portal route, and volunteers a correct clinical consequence unprompted. Effortless rather than hit because nothing is reconstructed — it is simply known."
+
+# ---------------------------------------------------------------------------
+# TEMPLATE — copy from here
+# ---------------------------------------------------------------------------
+#
+# - item_id: k-00N
+#   concept: ""
+#   subject: ""
+#   probe: ""
+#   rubric:
+#     claims:
+#       - ""
+#     route_markers:
+#       - ""
+#   response:
+#     source: own-answer | past-script | peer-answer | own-recollection
+#     text: |
+#       ...
+#   label:
+#     verdict: miss | partial | hit | effortless_hit
+#     route_quality: clean | route_failure | unassessable
+#     note: ""
