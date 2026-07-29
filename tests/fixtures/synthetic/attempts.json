@@ -1,0 +1,28 @@
+{
+  "_note": "SYNTHETIC — see README.md. Not the evaluation set.",
+  "rubric_id": "syn-alpha",
+
+  "hedging_pair": {
+    "_purpose": "FR-5: identical content, differ ONLY in hedging register. Same verdict expected; expressed_confidence differs.",
+    "assertive": {
+      "answer_was_onscreen": false,
+      "response": "Alpha binds beta tightly and gamma increases delta. The mechanism attributes binding charge overlap. This is definitely certainly correct."
+    },
+    "hedged": {
+      "answer_was_onscreen": false,
+      "response": "Alpha binds beta tightly and gamma increases delta. The mechanism attributes binding charge overlap. Maybe, perhaps, probably right I think."
+    }
+  },
+
+  "route_failure": {
+    "_purpose": "SC-4 shape: correct conclusion (both claims covered) with the route marker missing.",
+    "answer_was_onscreen": false,
+    "response": "Alpha binds beta tightly and gamma increases delta."
+  },
+
+  "base_attempt": {
+    "_purpose": "FR-4: a plain attempt used to check verdict invariance to surrounding conversation.",
+    "answer_was_onscreen": false,
+    "response": "Alpha binds beta tightly and gamma increases delta. The mechanism attributes binding charge overlap."
+  }
+}

@@ -1,0 +1,22 @@
+[project]
+name = "anamnesis"
+version = "0.0.0"
+description = "A local MCP service holding one learner's knowledge state."
+requires-python = ">=3.11"
+dependencies = []
+
+[project.optional-dependencies]
+# Only needed for the phase-0b real examiner (network grading). 0a runs without it.
+examiner = ["anthropic>=0.116.0"]
+
+[dependency-groups]
+dev = ["pytest>=8.0"]
+
+[tool.pytest.ini_options]
+# Make the `agents` namespace package importable from the repo root, and let
+# `python -m agents.examiner.harness` resolve the same way.
+pythonpath = ["."]
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 100

@@ -1,0 +1,19 @@
+{
+  "_note": "SYNTHETIC — see README.md. Not the evaluation set.",
+  "rubrics": [
+    {
+      "id": "syn-alpha",
+      "concept": "SYNTHETIC concept alpha",
+      "prompt": "SYNTHETIC prompt: explain how alpha relates to beta and gamma.",
+      "rubric": {
+        "claims": [
+          "alpha binds beta tightly",
+          "gamma increases delta"
+        ],
+        "route_markers": [
+          "mechanism attributes binding charge overlap"
+        ]
+      }
+    }
+  ]
+}
