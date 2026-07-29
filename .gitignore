@@ -6,3 +6,10 @@ __pycache__/
 .claude/worktrees/
 uv.lock
 agents/examiner/reports/
+
+# --- secrets & local/personal state (repo-bootstrap audit) ---
+.env
+.env.*
+data/
+.claude/settings.local.json
+.claude-flow/
