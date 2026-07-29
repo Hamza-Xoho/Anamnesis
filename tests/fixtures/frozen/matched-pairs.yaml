@@ -1,52 +1,398 @@
 # matched-pairs.yaml — SC-1
 #
-# ⚠️  EMPTY ON PURPOSE. Every entry below must be written by YOU, not a model.
-#     Worked examples live in Docs/Production/fixtures-template/matched-pairs.yaml
-#     — read them for shape, then write your own here. Do not copy them in.
+# ⚠️  PHASE-0 DEVIATION: the entries below are MODEL-DRAFTED (source: model-draft),
+#     not learner-authored, by explicit decision (2026-07-30). See README.md
+#     "Phase-0 deviation" note for what this means and why a pass here is a
+#     plumbing/calibration result, not the real gate. Replace with hand-authored
+#     pairs before treating any green run as the phase-0 decision.
 #
 # Each entry is ONE concept with TWO answers to the SAME probe:
-#   confidently_wrong — fluent, structured, assured, and WRONG
+#   confidently_wrong — fluent, structured, assured, and WRONG (about the mechanism)
 #   hedged_correct    — messy, uncertain, apologetic, and RIGHT
 #
 # The grader must rank hedged_correct above confidently_wrong in >=90% of pairs.
-# If it cannot, it is scoring prose quality and the project's premise fails.
-#
-# Pilot target: 10 pairs. Informative floor: 25. Full set: 40.
-#
-# SHAPE: this file is a bare top-level LIST — each entry begins with `- pair_id:`
-# at column zero, exactly like the worked examples. The `[]` below is the empty
-# list; delete it and add your entries when you start writing.
+# The wrongness is at the level of MECHANISM (the "why"), not vocabulary — a
+# reader who knows only the right buzzword cannot sort these; only one who reads
+# the reasoning can. Register is crossed on purpose and is NOT a confound.
 
-[]
+- pair_id: mp-001
+  concept: Aspirin's antiplatelet action and its duration
+  subject: Pharmacology
+  probe: "Why does a single daily low-dose aspirin reduce heart attacks, and why does its effect persist for days after the last dose?"
+  rubric:
+    claims:
+      - "Aspirin inhibits platelet cyclo-oxygenase, reducing thromboxane A2"
+      - "Reduced thromboxane impairs platelet aggregation"
+      - "Inhibition is irreversible; the platelet cannot resynthesise the enzyme"
+      - "Duration tracks platelet lifespan (~7-10 days), not the drug's half-life"
+    route_markers:
+      - "Locates the effect in the platelet, not in plasma factors or viscosity"
+      - "Ties the persistence to irreversible inhibition of an anucleate cell, not drug accumulation"
+  confidently_wrong:
+    source: model-draft
+    text: |
+      Aspirin thins the blood by lowering its viscosity and reversibly blocking
+      clotting factors in the plasma. Because it reduces the concentration of
+      circulating fibrinogen, clots form more slowly. The effect lasts several
+      days because aspirin has a long half-life and lingers in the bloodstream,
+      so one dose a day keeps plasma levels topped up and the blood continuously
+      thinned.
+    label:
+      verdict: miss
+      route_quality: route_failure
+      note: "Fluent and wrong from the first clause. Aspirin does not alter viscosity or fibrinogen and has a short half-life. Locates the action in plasma rather than the platelet."
+  hedged_correct:
+    source: model-draft
+    text: |
+      So it's platelets rather than the plasma, I think. Aspirin sticks onto an
+      enzyme inside the platelet — cyclo-oxygenase? — and stops it making
+      thromboxane, which is the thing platelets use to clump together. And
+      because the platelet can't make new enzyme, that one's knocked out for its
+      whole life, maybe a week, which I guess is why the effect outlasts the drug
+      itself. Not totally sure I've got the enzyme name right.
+    label:
+      verdict: hit
+      route_quality: clean
+      note: "Hedged on names but the mechanism is right: irreversible platelet COX inhibition, duration tied to platelet lifespan not half-life. This must rank higher."
 
-# ---------------------------------------------------------------------------
-# TEMPLATE — delete the `[]` above and copy this block once per pair
-# ---------------------------------------------------------------------------
-#
-# - pair_id: mp-001
-#   concept: ""
-#   subject: ""
-#   probe: ""
-#   rubric:
-#     claims:
-#       - ""
-#     route_markers:
-#       # The step that separates understanding from recall. Someone who has
-#       # memorised the conclusion misses these.
-#       - ""
-#   confidently_wrong:
-#     source: own-answer | past-script | peer-answer | own-recollection
-#     text: |
-#       ...
-#     label:
-#       verdict: miss | partial
-#       route_quality: route_failure | clean
-#       note: ""
-#   hedged_correct:
-#     source: own-answer | past-script | peer-answer | own-recollection
-#     text: |
-#       ...
-#     label:
-#       verdict: hit | effortless_hit
-#       route_quality: clean
-#       note: ""
+- pair_id: mp-002
+  concept: Loop diuretic-induced hypokalaemia
+  subject: Renal physiology
+  probe: "A patient on furosemide (a loop diuretic) develops a low blood potassium. Why?"
+  rubric:
+    claims:
+      - "Furosemide blocks Na reabsorption in the thick ascending limb"
+      - "More sodium is therefore delivered to the distal nephron"
+      - "Increased distal Na delivery drives potassium secretion by principal cells"
+      - "Secondary hyperaldosteronism from volume loss augments K secretion"
+    route_markers:
+      - "Attributes K loss to increased distal sodium delivery, not passive washout with water"
+  confidently_wrong:
+    source: model-draft
+    text: |
+      Furosemide works by flushing large volumes of water out through the kidney,
+      and potassium is simply washed out along with that water. Because it is a
+      strong diuretic, the more urine it produces the more potassium leaves with
+      it — the loss is essentially proportional to the volume of fluid excreted.
+      More water out means more potassium out.
+    label:
+      verdict: miss
+      route_quality: route_failure
+      note: "The 'washed out with the water' story. Confident and mechanistically wrong: potassium loss is driven by distal sodium delivery, not passive bulk flow."
+  hedged_correct:
+    source: model-draft
+    text: |
+      I think it blocks sodium being reabsorbed up in the loop, so more sodium
+      ends up arriving further down the tubule. And then in that later segment
+      the cells sort of trade the sodium back in exchange for potassium, which
+      gets dumped into the urine. Aldosterone probably ramps that up too since
+      you're a bit volume-depleted. So it's the extra sodium downstream driving
+      the potassium out, not just water washing it away — fairly sure that's it.
+    label:
+      verdict: hit
+      route_quality: clean
+      note: "Messy but correct: increased distal Na delivery plus aldosterone, explicitly rejecting the washout account."
+
+- pair_id: mp-003
+  concept: Microcytosis in iron-deficiency anaemia
+  subject: Haematology
+  probe: "Why are the red cells small (microcytic) in iron-deficiency anaemia?"
+  rubric:
+    claims:
+      - "Iron is required for haem, and haem for haemoglobin"
+      - "Limited iron limits haemoglobin synthesis per cell"
+      - "Erythroid precursors undergo additional divisions until a haemoglobin threshold is reached"
+      - "The extra divisions yield a smaller final cell"
+    route_markers:
+      - "Explains small size as a consequence of low haemoglobin per cell driving extra divisions, not a deliberate 'shrinking to conserve iron'"
+  confidently_wrong:
+    source: model-draft
+    text: |
+      With too little iron the marrow cannot build as much red-cell material, so
+      each cell is deliberately made smaller to conserve the limited iron
+      available. The body shrinks the cells so it can still turn out a reasonable
+      number of them from a reduced supply. Smaller cells but more of them is the
+      trade-off the marrow makes when iron is scarce.
+    label:
+      verdict: miss
+      route_quality: route_failure
+      note: "Teleological 'deliberate shrinking' story, stated with assurance. The size is a by-product of extra divisions, not a conservation strategy."
+  hedged_correct:
+    source: model-draft
+    text: |
+      Haemoglobin needs iron, so if iron's low you can't fill the cell with as
+      much haemoglobin. And I half-remember the precursor keeps dividing until
+      the haemoglobin inside hits some threshold — so if haemoglobin is building
+      up slowly, it goes through an extra division or two and ends up smaller. So
+      the small size is a knock-on of not enough haemoglobin per cell, if that
+      makes sense. Not certain on the threshold detail.
+    label:
+      verdict: hit
+      route_quality: clean
+      note: "Correct mechanism (extra divisions until Hb threshold), hedged throughout."
+
+- pair_id: mp-004
+  concept: Spasticity after an upper motor neuron lesion
+  subject: Neurology
+  probe: "Why does a stroke affecting the motor cortex leave the affected limbs stiff and spastic rather than floppy?"
+  rubric:
+    claims:
+      - "Descending pathways normally inhibit spinal stretch reflexes"
+      - "An upper motor neuron lesion removes that descending inhibition"
+      - "Disinhibited spinal reflex arcs become overactive, producing spasticity"
+    route_markers:
+      - "Attributes stiffness to loss of descending inhibition (disinhibited reflexes), not to the muscle being under-stimulated"
+  confidently_wrong:
+    source: model-draft
+    text: |
+      When the motor nerve pathway is damaged, less signal reaches the muscle,
+      and a muscle that is understimulated tightens and contracts abnormally. The
+      stiffness is the muscle's response to being partly cut off from its nerve
+      supply — deprived of normal input, it settles into a sustained low-grade
+      contraction, which we feel as spasticity. Restore the input and it relaxes.
+    label:
+      verdict: miss
+      route_quality: route_failure
+      note: "Confident and backwards: it treats spasticity as under-stimulation, when it is disinhibition of spinal reflexes."
+  hedged_correct:
+    source: model-draft
+    text: |
+      I'd have guessed floppy, but apparently it's the opposite. I think the
+      descending pathways normally keep the spinal reflexes in check, so when you
+      knock those out the reflex arcs down in the cord lose their brake and go
+      overactive. So the stiffness isn't the muscle being starved of signal —
+      it's the local reflexes running unopposed once the top-down inhibition is
+      gone. Something like that, anyway.
+    label:
+      verdict: hit
+      route_quality: clean
+      note: "Uncertain but correct: loss of descending inhibition disinhibiting stretch reflexes."
+
+- pair_id: mp-005
+  concept: Hypotension in tension pneumothorax
+  subject: Respiratory / emergency
+  probe: "Why does a tension pneumothorax cause the blood pressure to crash?"
+  rubric:
+    claims:
+      - "Air is trapped under rising pressure in the pleural space"
+      - "Rising intrathoracic pressure compresses the great veins and shifts the mediastinum"
+      - "Venous return to the heart falls, so cardiac output and blood pressure fall"
+    route_markers:
+      - "Attributes hypotension to impaired venous return from raised intrathoracic pressure, not to hypoxia from the collapsed lung"
+  confidently_wrong:
+    source: model-draft
+    text: |
+      The lung on that side collapses, so it can no longer oxygenate blood. The
+      falling oxygen level in the circulation is what drops the blood pressure —
+      the heart and vessels are not getting enough oxygen to hold their tone, so
+      pressure falls. Decompressing the chest re-expands the lung, restores
+      oxygenation, and the pressure recovers.
+    label:
+      verdict: miss
+      route_quality: route_failure
+      note: "Coherent and wrong: pins the crash on hypoxia when it is mechanical obstruction of venous return."
+  hedged_correct:
+    source: model-draft
+    text: |
+      It's not really the oxygen part, I don't think — it's mechanical. Air keeps
+      getting trapped under pressure and pushes everything in the chest across to
+      the other side. That rising pressure squashes the big veins coming back to
+      the heart, so less blood returns and the heart has less to pump out. That's
+      why putting a needle in works so fast — you let the pressure out and venous
+      return comes back. I'm fuzzy on exactly which veins.
+    label:
+      verdict: hit
+      route_quality: clean
+      note: "Correct mechanism (impaired venous return), hedged on detail. The needle-decompression reasoning shows the route."
+
+- pair_id: mp-006
+  concept: Anaphylaxis on re-exposure to an allergen
+  subject: Immunology
+  probe: "Why can a first bee sting be harmless but a later sting cause anaphylaxis?"
+  rubric:
+    claims:
+      - "First exposure sensitises: allergen-specific IgE is produced"
+      - "That IgE binds to mast cells and basophils without symptoms"
+      - "Re-exposure cross-links the pre-bound IgE, triggering mast cell degranulation"
+    route_markers:
+      - "Attributes the severe reaction to pre-formed IgE already on mast cells being cross-linked, not to simply making a larger/faster antibody response"
+  confidently_wrong:
+    source: model-draft
+    text: |
+      The immune system learns from the first sting and builds a stronger, faster
+      antibody response for next time. On the second exposure it recognises the
+      venom and mounts that bigger response so quickly that the reaction becomes
+      overwhelming. It is immunological memory working too well — the same
+      mechanism as a vaccine booster, just harmful here.
+    label:
+      verdict: partial
+      route_quality: route_failure
+      note: "The memory framing sounds right and is partly true, but it misses the actual mechanism: pre-formed IgE bound to mast cells being cross-linked. 'Bigger antibody response' is the wrong route."
+  hedged_correct:
+    source: model-draft
+    text: |
+      First time round you don't react because your body is still making the
+      antibody — the IgE one, I think — and it goes and coats the mast cells. So
+      you get 'sensitised' without symptoms. Then the second time the venom binds
+      that IgE already sitting on the mast cells, cross-links it, and they dump
+      histamine all at once. So it's not that the response is bigger — it's that
+      the trigger is pre-loaded onto the cells from last time. Fairly sure on the
+      mast cell part.
+    label:
+      verdict: hit
+      route_quality: clean
+      note: "Correct: sensitisation deposits IgE on mast cells; re-exposure cross-links it. Explicitly rejects the 'bigger response' account."
+
+- pair_id: mp-007
+  concept: Ascites in cirrhosis
+  subject: Gastroenterology
+  probe: "Why does a patient with cirrhosis accumulate fluid in the abdomen (ascites)?"
+  rubric:
+    claims:
+      - "Cirrhosis raises portal venous pressure (portal hypertension)"
+      - "Splanchnic vasodilation reduces effective circulating volume"
+      - "The kidney responds by retaining sodium and water, sustaining the fluid"
+      - "Low albumin contributes but is not the primary driver"
+    route_markers:
+      - "Treats portal hypertension and sodium retention as primary, with hypoalbuminaemia as contributory rather than the whole story"
+  confidently_wrong:
+    source: model-draft
+    text: |
+      The diseased liver cannot make enough albumin. With low albumin the oncotic
+      pressure that holds fluid inside the vessels falls, and fluid leaks out into
+      the abdominal cavity. Ascites in cirrhosis is fundamentally an albumin
+      problem — correct the albumin, restore the oncotic pressure, and the fluid
+      is drawn back in.
+    label:
+      verdict: partial
+      route_quality: route_failure
+      note: "The oncotic story is real but presented as the sole mechanism. Portal hypertension and renal sodium retention are primary; marked partial not miss."
+  hedged_correct:
+    source: model-draft
+    text: |
+      Low albumin is part of it, but I don't think that's the main driver. The
+      scarred liver blocks blood flowing through it, so pressure backs up in the
+      portal vein — portal hypertension. And I think the gut vessels dilate, the
+      kidney senses a low effective volume and holds onto salt and water, which
+      keeps refilling the leak. So it's mostly the pressure and the sodium, with
+      albumin as a contributor. The exact order I'm hazy on.
+    label:
+      verdict: hit
+      route_quality: clean
+      note: "Correct weighting, hedged. Explicitly demotes albumin from sole cause, which is the route marker."
+
+- pair_id: mp-008
+  concept: The raised anion gap in diabetic ketoacidosis
+  subject: Metabolic medicine
+  probe: "In diabetic ketoacidosis, why is the blood acidic with a raised anion gap?"
+  rubric:
+    claims:
+      - "Lack of insulin drives fat breakdown and ketone (ketoacid) production"
+      - "Ketoacids donate protons, lowering blood pH"
+      - "Ketoacids are unmeasured anions, so they widen the calculated anion gap"
+      - "Insulin corrects it chiefly by halting ketogenesis, not by lowering glucose per se"
+    route_markers:
+      - "Identifies ketoacids as the proton source and the unmeasured anion, not the glucose itself"
+  confidently_wrong:
+    source: model-draft
+    text: |
+      The very high blood glucose is what makes the blood acidic — sugar is
+      acidic in solution, so as glucose climbs the pH falls. The raised anion gap
+      reflects all the extra glucose molecules crowding the plasma. Bringing the
+      glucose down with insulin therefore directly corrects the acid and closes
+      the gap.
+    label:
+      verdict: miss
+      route_quality: route_failure
+      note: "Confidently wrong: glucose is not the acid and is uncharged, so it cannot widen an anion gap. The ketoacids are the whole story it misses."
+  hedged_correct:
+    source: model-draft
+    text: |
+      Without insulin the body can't use glucose, so it burns fat instead, and
+      that makes ketones — which are acids. Those ketoacids are what drop the pH.
+      And the gap bit... I think it's because these acids aren't chloride or
+      bicarb, so they count as 'unmeasured' anions and widen the calculated gap.
+      Insulin helps because it switches off the fat-burning, not really because it
+      lowers the sugar. Roughly right, I hope.
+    label:
+      verdict: hit
+      route_quality: clean
+      note: "Correct: ketoacids as proton source and unmeasured anion; insulin acts by stopping ketogenesis. Hedged throughout."
+
+- pair_id: mp-009
+  concept: Beta-blockers in chronic heart failure
+  subject: Cardiology / pharmacology
+  probe: "Beta-blockers weaken the heart's contraction, yet we give them in chronic heart failure and they improve survival. Why is that not a contradiction?"
+  rubric:
+    claims:
+      - "Chronic heart failure drives sustained sympathetic (catecholamine) overactivation"
+      - "Chronic catecholamine exposure is itself harmful: adverse remodelling and arrhythmia"
+      - "Beta-blockade blunts that chronic neurohormonal damage over time"
+      - "Benefit is delayed; therapy is started low and may worsen symptoms acutely"
+    route_markers:
+      - "Explains benefit as chronic protection from neurohormonal/catecholamine damage, not as acutely 'resting' the pump"
+  confidently_wrong:
+    source: model-draft
+    text: |
+      It isn't a contradiction because in heart failure the heart is beating too
+      fast and too hard, wearing itself out. Beta-blockers slow it and ease the
+      force, letting the tired muscle rest and recover. By reducing the workload
+      directly, they let the failing heart conserve its strength — a weaker but
+      more sustainable beat is exactly what a worn-out heart needs.
+    label:
+      verdict: partial
+      route_quality: route_failure
+      note: "The 'rest the tired heart' account is intuitive, fluent, and the wrong route. Misses that the benefit is chronic protection from catecholamine-driven remodelling; also fails to note the delayed onset / initial worsening."
+  hedged_correct:
+    source: model-draft
+    text: |
+      The bit that resolves it, I think, is that heart failure cranks up the
+      sympathetic system chronically, and all that adrenaline is actually
+      damaging the heart over time — remodelling it, making it prone to
+      arrhythmias. So blocking it isn't mainly about resting the pump on the day;
+      it's shielding the muscle from long-term catecholamine damage. Which is also
+      why you start low and it takes weeks to help, and can feel worse at first.
+      Not certain on the receptor details.
+    label:
+      verdict: hit
+      route_quality: clean
+      note: "Correct route (chronic neurohormonal protection) plus the delayed-onset/initial-worsening tell. Hedged on receptor detail."
+
+- pair_id: mp-010
+  concept: How hyperkalaemia arrests the heart
+  subject: Cardiac electrophysiology
+  probe: "Why does a dangerously high blood potassium stop the heart?"
+  rubric:
+    claims:
+      - "Raised extracellular potassium depolarises the resting membrane potential"
+      - "Sustained depolarisation inactivates fast sodium channels"
+      - "Reduced sodium-channel availability slows conduction and lowers excitability"
+      - "The result is conduction block / arrest, i.e. too little excitability, not too much"
+    route_markers:
+      - "Explains arrest via depolarisation-induced sodium-channel inactivation (reduced excitability), not via 'over-excitation'"
+  confidently_wrong:
+    source: model-draft
+    text: |
+      Potassium is what excites heart muscle, so an excess of it over-excites the
+      heart. The muscle is driven into faster and faster activity until it can no
+      longer coordinate and arrests. In effect the heart is over-stimulated to a
+      standstill — too much of the ion that fires it makes it fire uncontrollably
+      and then fail.
+    label:
+      verdict: miss
+      route_quality: route_failure
+      note: "Assured and exactly backwards: hyperkalaemia reduces excitability by inactivating sodium channels; it does not 'over-excite'."
+  hedged_correct:
+    source: model-draft
+    text: |
+      This one's counter-intuitive to me. Raising potassium outside the cell
+      actually makes the resting voltage sit higher — closer to threshold at
+      first — but if it stays up, the sodium channels that fire each beat get
+      stuck inactivated, so the cells become harder to excite and conduction
+      slows right down. So it's more of a shutting-down than an over-firing,
+      ending with the heart too quiet to beat. I have to reason it through rather
+      than just knowing it.
+    label:
+      verdict: hit
+      route_quality: clean
+      note: "Correct and self-aware: depolarisation then Na-channel inactivation reducing excitability. The 'counter-intuitive' framing shows real reconstruction."
