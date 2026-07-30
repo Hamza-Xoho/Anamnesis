@@ -1,43 +1,195 @@
 # route-failures.yaml — SC-4
 #
-# ⚠️  EMPTY ON PURPOSE. Every entry below must be written by YOU, not a model.
-#     Worked examples live in Docs/Production/fixtures-template/route-failures.yaml
-#     — read them for shape, then write your own here. Do not copy them in.
+# ⚠️  PHASE-0 DEVIATION: the entries below are MODEL-DRAFTED (source: model-draft),
+#     not learner-authored, by explicit decision (2026-07-30). See README.md
+#     "Phase-0 deviation" note. A pass here is a plumbing/calibration result, not
+#     the real gate. Replace with hand-authored items before it counts.
 #
 # Every entry reaches the RIGHT CONCLUSION by a route that does not work:
 #     verdict: hit                   <- the answer is correct
 #     route_quality: route_failure   <- the reasoning is not
 #
 # A grader that only checks conclusions passes all of these. Yours must flag
-# >=80%. This is the test that separates Anamnesis from a marking script.
-#
-# Test for a good item: could someone give this answer, be marked correct in an
-# exam, and still not understand the topic? If yes, it belongs here.
-#
-# Pilot target: 8 items. Full set: 25.
+# >=80%. Test for a good item: could someone give this answer, be marked correct
+# in an exam, and still not understand the topic? If yes, it belongs here.
 
-items: []
+- item_id: rf-001
+  concept: Hypoxia in pulmonary embolism
+  subject: Respiratory medicine
+  probe: "Why does a pulmonary embolism make the patient hypoxic?"
+  rubric:
+    claims:
+      - "PE causes hypoxaemia"
+    route_markers:
+      - "Attributes hypoxia principally to V/Q mismatch — redistribution of flow to over-perfused units, shunt, and a low mixed-venous O2 — rather than to the embolised segment simply not oxygenating blood"
+  response:
+    source: model-draft
+    text: |
+      The clot lodges in a pulmonary artery and blocks blood flow to that part of
+      the lung. With no blood reaching those alveoli, that segment can't pick up
+      oxygen, so the oxygen content of the blood leaving the lungs falls and the
+      patient becomes hypoxic. The bigger the clot, the more lung is cut off and
+      the worse the hypoxia.
+  label:
+    verdict: hit
+    route_quality: route_failure
+    route_marker_missed: "Attributes hypoxia principally to V/Q mismatch — redistribution of flow to over-perfused units, shunt, and a low mixed-venous O2 — rather than to the embolised segment simply not oxygenating blood"
+    note: "Correct that PE causes hypoxia, wrong on why. An unperfused segment adds no desaturated blood; hypoxaemia comes from flow diverted to other units creating low-V/Q and shunt, plus reduced mixed-venous O2. The 'blocked bit can't oxygenate' story is the common wrong route."
 
-# ---------------------------------------------------------------------------
-# TEMPLATE — replace `items: []` above with entries in this shape
-# ---------------------------------------------------------------------------
-#
-# items:
-#   - item_id: rf-001
-#     concept: ""
-#     subject: ""
-#     probe: ""
-#     rubric:
-#       claims:
-#         - ""
-#       route_markers:
-#         - ""
-#     response:
-#       source: own-answer | past-script | peer-answer | own-recollection
-#       text: |
-#         ...
-#     label:
-#       verdict: hit
-#       route_quality: route_failure
-#       route_marker_missed: ""
-#       note: ""
+- item_id: rf-002
+  concept: Gynaecomastia from spironolactone
+  subject: Pharmacology
+  probe: "Why does spironolactone cause gynaecomastia?"
+  rubric:
+    claims:
+      - "Spironolactone can cause gynaecomastia"
+    route_markers:
+      - "Attributes it to spironolactone's anti-androgen and progestogenic receptor activity, independent of its diuretic action"
+  response:
+    source: model-draft
+    text: |
+      Spironolactone is a potassium-sparing diuretic, and by shifting the body's
+      fluid and electrolyte balance it disturbs hormone levels, which leads to
+      breast tissue growing in men. It's a downstream consequence of the diuretic
+      action altering the internal environment enough to unbalance the sex
+      hormones.
+  label:
+    verdict: hit
+    route_quality: route_failure
+    route_marker_missed: "Attributes it to spironolactone's anti-androgen and progestogenic receptor activity, independent of its diuretic action"
+    note: "Right that it causes gynaecomastia, wrong mechanism. It is a direct receptor effect — androgen-receptor antagonism plus progestogenic activity — not a knock-on of diuresis or electrolyte shift."
+
+- item_id: rf-003
+  concept: Delayed onset of warfarin
+  subject: Pharmacology
+  probe: "Why does warfarin take a few days to become effective rather than working immediately?"
+  rubric:
+    claims:
+      - "Warfarin's anticoagulant effect is delayed by several days"
+    route_markers:
+      - "Attributes the delay to clearance of pre-existing clotting factors (governed by their half-lives, notably factor II) once new synthesis stops, not to the drug accumulating to a therapeutic level"
+  response:
+    source: model-draft
+    text: |
+      Warfarin has to build up in the body to a high enough concentration before
+      it can work. Like many drugs it needs several doses to reach a steady
+      therapeutic level in the blood, and until it accumulates to that point the
+      anticoagulant effect isn't strong enough to matter. That's why we bridge
+      with heparin for the first few days.
+  label:
+    verdict: hit
+    route_quality: route_failure
+    route_marker_missed: "Attributes the delay to clearance of pre-existing clotting factors (governed by their half-lives, notably factor II) once new synthesis stops, not to the drug accumulating to a therapeutic level"
+    note: "Correct that onset is delayed and that we bridge with heparin, wrong on why. Warfarin stops synthesis of new factors immediately; the delay is the time for already-circulating factors to be cleared, set by their half-lives — not drug accumulation."
+
+- item_id: rf-004
+  concept: Exertional syncope in aortic stenosis
+  subject: Cardiology
+  probe: "Why does someone with severe aortic stenosis faint on exertion?"
+  rubric:
+    claims:
+      - "Severe aortic stenosis causes exertional syncope"
+    route_markers:
+      - "Attributes it to a fixed cardiac output that cannot rise to match exercise-induced peripheral vasodilation, so blood pressure falls (± arrhythmia / ventricular baroreflex), rather than the valve physically 'blocking blood to the brain'"
+  response:
+    source: model-draft
+    text: |
+      The valve is so narrowed that it physically blocks blood from getting
+      through to the body and brain. During exercise the demand goes up, but the
+      tight valve simply can't let enough blood past, so the brain is starved of
+      blood and the person passes out. It's a plumbing blockage made worse by
+      exertion.
+  label:
+    verdict: hit
+    route_quality: route_failure
+    route_marker_missed: "Attributes it to a fixed cardiac output that cannot rise to match exercise-induced peripheral vasodilation, so blood pressure falls (± arrhythmia / ventricular baroreflex), rather than the valve physically 'blocking blood to the brain'"
+    note: "Right conclusion, folk mechanism. Blood does cross the valve at rest; syncope arises because on exertion the muscle beds vasodilate but the stenosis fixes cardiac output, so systemic pressure drops. The 'blockage starving the brain' picture is the common wrong route."
+
+- item_id: rf-005
+  concept: Anaemia of chronic kidney disease
+  subject: Renal medicine
+  probe: "Why do patients with chronic kidney disease become anaemic?"
+  rubric:
+    claims:
+      - "CKD causes anaemia that worsens as function declines"
+    route_markers:
+      - "Attributes it chiefly to reduced erythropoietin production by the kidney (with iron/uraemic contributions), not to 'poor filtering' or marrow being poisoned by retained waste"
+  response:
+    source: model-draft
+    text: |
+      The kidneys are damaged and can no longer filter the blood properly. Waste
+      products build up, and the poisoned bone marrow can't make red cells
+      efficiently, so the count drops. As kidney function declines the anaemia
+      gets worse because the blood is progressively less well cleaned.
+  label:
+    verdict: hit
+    route_quality: route_failure
+    route_marker_missed: "Attributes it chiefly to reduced erythropoietin production by the kidney (with iron/uraemic contributions), not to 'poor filtering' or marrow being poisoned by retained waste"
+    note: "Correct association, wrong route. The dominant cause is loss of erythropoietin (an endocrine, not excretory, function of the kidney). The 'toxins poisoning the marrow' account is why EPO analogues, not dialysis alone, treat it."
+
+- item_id: rf-006
+  concept: Metformin-associated lactic acidosis
+  subject: Pharmacology
+  probe: "Why can metformin cause lactic acidosis?"
+  rubric:
+    claims:
+      - "Metformin can cause lactic acidosis, especially when it accumulates (e.g. renal impairment)"
+    route_markers:
+      - "Attributes it to inhibition of hepatic gluconeogenesis / mitochondrial complex I — diverting lactate away from gluconeogenesis and reducing its hepatic clearance — not to nonspecific 'drug toxicity poisoning the tissues'"
+  response:
+    source: model-draft
+    text: |
+      Metformin is a fairly toxic drug at higher levels, and when it accumulates —
+      for instance if the kidneys can't clear it — it poisons the tissues, and
+      acid builds up as a general sign of that toxicity. The lactic acidosis is
+      basically the body's reaction to the drug reaching harmful concentrations.
+  label:
+    verdict: hit
+    route_quality: route_failure
+    route_marker_missed: "Attributes it to inhibition of hepatic gluconeogenesis / mitochondrial complex I — diverting lactate away from gluconeogenesis and reducing its hepatic clearance — not to nonspecific 'drug toxicity poisoning the tissues'"
+    note: "Right about the risk and the renal-accumulation link, hand-waves the mechanism. Metformin inhibits hepatic gluconeogenesis and complex I, so lactate is both over-produced and under-cleared by the liver — specific biochemistry, not generic toxicity."
+
+- item_id: rf-007
+  concept: Rapid symptom relief from IV furosemide in acute pulmonary oedema
+  subject: Cardiology
+  probe: "Why does intravenous furosemide relieve breathlessness within minutes in acute pulmonary oedema?"
+  rubric:
+    claims:
+      - "IV furosemide relieves breathlessness in acute pulmonary oedema"
+    route_markers:
+      - "Attributes the earliest relief (before meaningful diuresis) to venodilation reducing preload, with the diuretic effect contributing later, rather than to rapid urinary fluid removal alone"
+  response:
+    source: model-draft
+    text: |
+      Furosemide is a powerful diuretic, so it rapidly pulls the excess fluid off
+      the lungs by making the kidneys produce a large amount of urine. As that
+      fluid is excreted, the water that was backed up in the lungs drains away and
+      breathing eases — the fast diuresis is what clears the pulmonary congestion.
+  label:
+    verdict: hit
+    route_quality: route_failure
+    route_marker_missed: "Attributes the earliest relief (before meaningful diuresis) to venodilation reducing preload, with the diuretic effect contributing later, rather than to rapid urinary fluid removal alone"
+    note: "Right that it relieves symptoms fast, wrong route. Relief within minutes precedes any significant urine output; it is largely venodilation dropping preload. Crediting the rapid relief solely to diuresis is the standard wrong route."
+
+- item_id: rf-008
+  concept: Mechanism of febrile convulsions
+  subject: Paediatrics
+  probe: "Why does a high fever cause a febrile convulsion in a young child?"
+  rubric:
+    claims:
+      - "High fever is associated with febrile convulsions in susceptible young children"
+    route_markers:
+      - "Attributes it to a developmentally immature, hyperexcitable brain reacting to fever (with the rate of temperature rise implicated), not to the brain being physically 'overheated' or damaged by the absolute temperature"
+  response:
+    source: model-draft
+    text: |
+      A febrile convulsion happens because the high temperature overheats the
+      brain. Once the fever passes a certain level the heat directly irritates the
+      brain tissue and triggers a seizure — essentially the brain is being cooked
+      slightly, and the fit is the result. That's why bringing the temperature
+      down stops them.
+  label:
+    verdict: hit
+    route_quality: route_failure
+    route_marker_missed: "Attributes it to a developmentally immature, hyperexcitable brain reacting to fever (with the rate of temperature rise implicated), not to the brain being physically 'overheated' or damaged by the absolute temperature"
+    note: "Correct that fever triggers them, wrong route. The seizure reflects an age-specific neuronal susceptibility to fever, not thermal tissue damage — which is why they are benign, age-limited, and why antipyretics do not reliably prevent them."

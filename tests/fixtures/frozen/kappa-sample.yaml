@@ -16,29 +16,32 @@
 # Aim for a spread near: 25% miss, 30% partial, 35% hit, 10% effortless_hit.
 # A sample of only clear passes and clear failures inflates κ.
 #
-# Not needed for the pilot. Full set: 30.
+# Not needed for the pilot. Informative floor: 25. Full set: 30.
+#
+# SHAPE: this file is a bare top-level LIST — each entry begins with `- item_id:`
+# at column zero, exactly like the worked examples. The `[]` below is the empty
+# list; delete it and add your entries when you start writing.
 
-items: []
+[]
 
 # ---------------------------------------------------------------------------
-# TEMPLATE — replace `items: []` above with entries in this shape
+# TEMPLATE — delete the `[]` above and copy this block once per item
 # ---------------------------------------------------------------------------
 #
-# items:
-#   - item_id: k-001
-#     concept: ""
-#     subject: ""
-#     probe: ""
-#     rubric:
-#       claims:
-#         - ""
-#       route_markers:
-#         - ""
-#     response:
-#       source: own-answer | past-script | peer-answer | own-recollection
-#       text: |
-#         ...
-#     label:
-#       verdict: miss | partial | hit | effortless_hit
-#       route_quality: clean | route_failure | unassessable
-#       note: ""
+# - item_id: k-001
+#   concept: ""
+#   subject: ""
+#   probe: ""
+#   rubric:
+#     claims:
+#       - ""
+#     route_markers:
+#       - ""
+#   response:
+#     source: own-answer | past-script | peer-answer | own-recollection
+#     text: |
+#       ...
+#   label:
+#     verdict: miss | partial | hit | effortless_hit
+#     route_quality: clean | route_failure | unassessable
+#     note: ""
