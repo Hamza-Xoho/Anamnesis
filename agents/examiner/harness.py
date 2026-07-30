@@ -14,11 +14,17 @@ for the rest of the project to be worth building:
 It refuses to emit a gate on an insufficient set. Per the frozen README, the
 pilot is 10 matched pairs / 8 route-failures, and the informative floor is ~25
 matched pairs — below that you cannot statistically tell 90% from 70%. If the
-set is below floor, the harness reports BLOCKED and produces no pass/fail — a
+set is below floor, --report reports BLOCKED and produces no pass/fail — a
 number computed on n=2 is not a measurement.
 
+--pilot deliberately bypasses that floor to probe direction on the prescribed
+10/8 pilot set with the real pinned model. It reports status "pilot", never
+"measured", and cannot pass or fail the gate — a pilot indicates direction
+only. It returns 0 whenever it ran, whatever the thresholds say.
+
 Usage:
-  python -m agents.examiner.harness --report     # real pinned model (Opus 4.8)
+  python -m agents.examiner.harness --report     # real pinned model (Opus 4.8), gate
+  python -m agents.examiner.harness --pilot       # real pinned model on the below-floor pilot set (direction only)
   python -m agents.examiner.harness --dry-run     # offline plumbing check only
 """
 
@@ -47,6 +53,16 @@ KAPPA_SUBSTANTIAL_BAND = 0.61
 FLOOR_MATCHED_PAIRS = 25
 FLOOR_ROUTE_FAILURES = 25
 FLOOR_KAPPA_ITEMS = 25
+
+# What a below-floor pilot result may and may not be read as.
+PILOT_INTERPRETATION = (
+    "PILOT — direction only, NOT the phase-0 architecture gate. This is a real "
+    "measurement of a small set graded by the pinned model, but below ~25 matched "
+    "pairs a 90% separation rate cannot be statistically distinguished from 70%, "
+    "so no pass/fail can be read from it. Bands (frozen README): near or above "
+    "threshold → build the full set; 50–70% → grader is close, iterate on the "
+    "pilot; near chance → stop, the assumption did not hold."
+)
 
 _VERDICT_RANK = {"miss": 0, "partial": 1, "hit": 2, "effortless_hit": 3}
 _ROUTE_RANK = {"unassessable": 0, "route_failure": 0, "clean": 1}
@@ -217,13 +233,14 @@ def _grader_stamp(dry_run: bool):
     return c, {"model_id": c.model_id, "model_version": c.model_version, "prompt_hash": c.prompt_hash}
 
 
-def run(dry_run: bool = False) -> int:
+def run(dry_run: bool = False, pilot: bool = False) -> int:
     frozen = load_frozen()
     counts = _counts(frozen)
     reason = _insufficiency_reason(counts)
 
-    # Real measurement refuses to run below the informative floor.
-    if not dry_run and reason:
+    # Real measurement refuses to run below the informative floor. A pilot is a
+    # deliberate below-floor probe, so it bypasses the floor; a dry run never gates.
+    if not dry_run and not pilot and reason:
         report = {
             "status": "blocked",
             "reason": f"frozen set below informative floor ({reason})",
@@ -236,13 +253,16 @@ def run(dry_run: bool = False) -> int:
         _print(report)
         return 2
 
+    # Pilot grades with the same real pinned client as --report; only --dry-run
+    # uses the offline DeterministicClient.
     client, grader = _grader_stamp(dry_run)
     sc1 = measure_sc1(frozen["matched_pairs"], client)
     sc4 = measure_sc4(frozen["route_failures"], client)
     kappa = measure_kappa(frozen["kappa"], client)
 
+    status = "dry_run" if dry_run else "pilot" if pilot else "measured"
     report = {
-        "status": "dry_run" if dry_run else "measured",
+        "status": status,
         "grader": grader,
         "counts": counts,
         "floors": _floors(),
@@ -258,10 +278,14 @@ def run(dry_run: bool = False) -> int:
             "not the pinned model, and over an insufficient seed set. These numbers "
             "prove the pipeline runs; they are NOT the Phase 0b measurement."
         )
+    if pilot:
+        report["interpretation"] = PILOT_INTERPRETATION
     _write(report)
     _print(report)
 
-    if dry_run:
+    # A dry run proves plumbing; a pilot indicates direction. Neither passes or
+    # fails a gate, so both return 0 whenever they actually ran.
+    if dry_run or pilot:
         return 0
     return 0 if (sc1["pass"] and sc4["pass"]) else 1
 
@@ -286,6 +310,8 @@ def _print(report: dict) -> None:
           f"{'PASS' if sc4['pass'] else 'FAIL'}")
     print(f"  κ (substantial band ≥{report['kappa_substantial_band']}): "
           f"verdict={k['verdict']:.2f}  route_quality={k['route_quality']:.2f}  (n={k['n']})")
+    if "interpretation" in report:
+        print(f"  ⓘ {report['interpretation']}")
     print(f"  Report written to {REPORT_PATH}")
 
 
@@ -294,10 +320,12 @@ def main(argv=None) -> int:
     group = parser.add_mutually_exclusive_group()
     group.add_argument("--report", action="store_true",
                        help="measure with the real pinned model (Opus 4.8)")
+    group.add_argument("--pilot", action="store_true",
+                       help="real pinned model over the below-floor pilot set; direction only, never a gate")
     group.add_argument("--dry-run", action="store_true",
                        help="offline plumbing check with the deterministic grader (not a measurement)")
     args = parser.parse_args(argv)
-    return run(dry_run=args.dry_run)
+    return run(dry_run=args.dry_run, pilot=args.pilot)
 
 
 if __name__ == "__main__":
